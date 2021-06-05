@@ -1,24 +1,27 @@
+import React from 'react';
 import Modal from 'react-modal';
-import {useForm} from 'react-hook-form';
 import {FiX} from 'react-icons/fi';
-import { Container, Error } from './styles';
+import { useForm } from 'react-hook-form'
+import { Container, Error } from './styles'
+import api from '../../services/api';
 
-interface NewCourseUnitProps {
+interface NewCourseUnitModalProps {
     isOpen: boolean;
-    onRequestClose: ()=>void;
+    onRequestClose: () => void;
 }
 
-interface NewActivityModalData {
+interface NewCourseUnitModalData {
     name: string;
     description: string;
 }
 
-export function NewCourseUnitModal({isOpen,onRequestClose}:NewCourseUnitProps){
+export function NewCourseUnitModal({isOpen, onRequestClose}:NewCourseUnitModalProps) {
 
-    const {register, handleSubmit, formState:{errors}} = useForm<NewActivityModalData>()
+    const { register, handleSubmit, formState: {errors} } = useForm<NewCourseUnitModalData>();
     
-    const onSubmit = handleSubmit(data => alert(JSON.stringify(data)))
-    
+    const onSubmit = handleSubmit(data => api.post('/courseunit', data)
+        .then(onRequestClose));
+
     return(
         <Modal
             isOpen={isOpen}
@@ -39,22 +42,21 @@ export function NewCourseUnitModal({isOpen,onRequestClose}:NewCourseUnitProps){
                     <input 
                         type="text"
                         placeholder="Nome"
-                        {...register("name", {required:true})}
-                        >
-                    </input>
-                    {errors.name && <Error>O preenchimento do campo e obrigatorio</Error>}
+                        {...register("name")}
+                    />
+                    {errors.name && <Error>O prenchimento do campo é obrigatório</Error>}
                     <input 
                         type="text"
-                        placeholder="Descricao"
-                        {...register("description", {required:true})}
-                        >
-                    </input>
-                    {errors.description && <Error>O preenchimento do campo e obrigatorio</Error>}
+                        placeholder="Descrição"
+                        {...register("description")}
+                    />
+                    {errors.description && <Error>O prenchimento do campo é obrigatório</Error>}
                     <button type="submit">
                         Cadastrar
                     </button>
                 </form>
             </Container>
         </Modal>
+        
     )
 }

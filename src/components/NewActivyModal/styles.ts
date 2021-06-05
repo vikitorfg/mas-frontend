@@ -6,8 +6,8 @@ export const Container = styled.div`
         font-size: 1.5rem;
         margin-bottom: 2rem;
     }
-
-    input {
+    
+    input, select {
         width: 100%;
         padding: 0 1.5rem;
         height: 3rem;
