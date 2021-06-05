@@ -3,17 +3,18 @@ import {useForm} from 'react-hook-form';
 import {FiX} from 'react-icons/fi';
 import { Container, Error } from './styles';
 
-interface NewCourseUnitProps {
+interface NewActivityModalProps {
     isOpen: boolean;
     onRequestClose: ()=>void;
 }
 
 interface NewActivityModalData {
-    name: string;
-    description: string;
+    courseunit: string;
+    activity: string;
+    date: Date;
 }
 
-export function NewCourseUnitModal({isOpen,onRequestClose}:NewCourseUnitProps){
+export function NewActivityModal({isOpen,onRequestClose}:NewActivityModalProps){
 
     const {register, handleSubmit, formState:{errors}} = useForm<NewActivityModalData>()
     
@@ -27,7 +28,7 @@ export function NewCourseUnitModal({isOpen,onRequestClose}:NewCourseUnitProps){
             className="react-modal-content"
         >
             <Container>
-                <h2>Cadastrar Unidade Curricular</h2>
+                <h2>Cadastrar Atividade</h2>
                 <button
                     type="button"
                     onClick={onRequestClose}
@@ -38,18 +39,25 @@ export function NewCourseUnitModal({isOpen,onRequestClose}:NewCourseUnitProps){
                 <form onSubmit={onSubmit}>
                     <input 
                         type="text"
-                        placeholder="Nome"
-                        {...register("name", {required:true})}
+                        placeholder="Unidade Curricular"
+                        {...register("courseunit", {required:true})}
                         >
                     </input>
-                    {errors.name && <Error>O preenchimento do campo e obrigatorio</Error>}
+                    {errors.courseunit && <Error>O preenchimento do campo e obrigatorio</Error>}
                     <input 
                         type="text"
-                        placeholder="Descricao"
-                        {...register("description", {required:true})}
+                        placeholder="Atividade"
+                        {...register("activity", {required:true})}
                         >
                     </input>
-                    {errors.description && <Error>O preenchimento do campo e obrigatorio</Error>}
+                    {errors.activity && <Error>O preenchimento do campo e obrigatorio</Error>}
+                    <input 
+                        type="date"
+                        placeholder="Data da atividade"
+                        {...register("date", {required:true})}
+                    >
+                    </input>
+                    {errors.date && <Error>O preenchimento do campo e obrigatorio</Error>}
                     <button type="submit">
                         Cadastrar
                     </button>
